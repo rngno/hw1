@@ -16,8 +16,33 @@ the function below should be the only one in this file.
 
 void split(Node*& in, Node*& odds, Node*& evens)
 {
-  /* Add code here */
-// WRITE YOUR CODE HERE
+  // base case for recursion, only need to know if in is empty
+  if(in == nullptr){
+    // since in is empty, there isn't anything to split
+    odds = nullptr;
+    evens = nullptr;
+    return;
+  }
+
+  // actual recursion call
+  split(in->next, odds, evens);
+
+  // in retrospect this condition is kind of pointless but i'm leaving it in (im tired)
+  if(in != nullptr){
+    // evens handling
+    if(in->value%2 == 0){
+      in->next = evens;
+      evens = in;
+    }
+    // odds handling
+    else{
+      in->next = odds;
+      odds = in;
+    }
+
+  }
+  // now stop using in per requirements in assignment
+  in = nullptr;
 }
 
 /* If you needed a helper function, write it here */
