@@ -27,7 +27,7 @@ void split(Node*& in, Node*& odds, Node*& evens)
   // actual recursion call
   split(in->next, odds, evens);
 
-  // in retrospect this condition is kind of pointless but i'm leaving it in (im tired)
+  // in retrospect this condition is kind of pointless but i'm leaving it here
   if(in != nullptr){
     // evens handling
     if(in->value%2 == 0){

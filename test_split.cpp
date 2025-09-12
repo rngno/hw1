@@ -26,7 +26,56 @@ int main(int argc, char* argv[])
   else{
     std::cout << "Failed 1 odd 1 even test" << std::endl;
   }
-  delete in;
-  delete in2;
+  
+  delete odds;
+  delete evens;
+  in2 = new Node(3, nullptr);
+  in = new Node(1, in2);
+  odds = nullptr;
+  evens = nullptr;
+
+  std::cout << "Test 2 odds, no evens" << std::endl;
+  split(in, odds, evens);
+  if(in == nullptr){
+      std::cout << "Passed 2 odds test" << std::endl;
+    }
+  else{
+      std::cout << "Failed 2 odds test" << std::endl;
+  }
+
+  delete odds;
+  delete evens;
+  in2 = new Node(4, nullptr);
+  in = new Node(2, in2);
+  odds = nullptr;
+  evens = nullptr;
+
+  std::cout << "Test 2 evens, no odds" << std::endl;
+  split(in, odds, evens);
+  if(in == nullptr){
+      std::cout << "Passed 2 evens test" << std::endl;
+    }
+  else{
+      std::cout << "Failed 2 evens test" << std::endl;
+  }
+
+  delete odds;
+  delete evens;
+  in2 = new Node(0, nullptr);
+  in = new Node(0, in2);
+  odds = nullptr;
+  evens = nullptr;
+
+  std::cout << "Test empty list" << std::endl;
+  split(in, odds, evens);
+  if(in == nullptr){
+      std::cout << "Passed empty test" << std::endl;
+    }
+  else{
+      std::cout << "Failed empty test" << std::endl;
+  }
+
+  delete odds;
+  delete evens;
   return 0;
 }
