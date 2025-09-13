@@ -31,15 +31,15 @@ std::string const &ULListStr::front() const{
   if(head_ == nullptr){
     return NULL;
   }
-  return head_->val[head_->first];
+  return head_->val[head_->first]; // have to use head_->first to get position of first element since elements begin at the right and come left
 }
 
 std::string const &ULListStr::back() const{
   // catch if list is empty
   if(tail_ == nullptr){
-    return NULL;
+    return NULL; // am I supposed to use nullptr here?? idk what convention is for this case
   }
-  return tail_->val[tail_->last-1];
+  return tail_->val[tail_->last-1]; // have to use tail_->last-1 to get position of last element since last is exclusive per assignment requirements
 }
 
 std::string *ULListStr::getValAtLoc(size_t loc) const{
@@ -47,17 +47,19 @@ std::string *ULListStr::getValAtLoc(size_t loc) const{
   if(head_ == nullptr || loc >= size_){
     return nullptr;
   }
+  // use tmp to walk through LL
   Item* tmp = head_;
+  // keep walking until we hit the end of the LL
   while(tmp != nullptr){
-    size_t idx = tmp->last-tmp->first;
+    size_t idx = tmp->last-tmp->first; // this is the actual size of the array in the node
     // determine if loc is within tmp, if not then we move to the next node
     if(loc < idx){
-      return tmp->val + tmp->first + loc;
+      return tmp->val + tmp->first + loc; // only need to return a ptr, so this should be good
     }
     // loc isn't in tmp, so move onto next node
     else{
-      loc = loc - idx;
-      tmp = tmp->next;
+      loc = loc - idx; // decrement by the amount we've walked so far in the array
+      tmp = tmp->next; // increment nodes
     }
   }
   return nullptr; // this shouldn't be reachable but it needs to be here for compiler
@@ -68,10 +70,11 @@ void ULListStr::push_back(const std::string& val)
   // handle if list is empty
   if (tail_ == nullptr) {
     Item* tmp = new Item();
-    // since only 1 item now, head and tail are listed as tmp
+    // since only 1 item now, head and tail are both listed as tmp
     head_ = tmp;
     tail_ = tmp;
   }
+
   // make a new tail node if one already exists and tail is full
   if (tail_->last == ARRSIZE) {
     Item* tmp = new Item();
@@ -79,9 +82,10 @@ void ULListStr::push_back(const std::string& val)
     tail_->next = tmp;
     tail_ = tmp;
   }
+
   // handle inserting val after the position of tmp in the LL
   tail_->val[tail_->last] = val;
-  tail_->last++; // last index is exclusive per requirements
+  tail_->last++; // last is exclusive per requirements
   size_ ++;
 }
 
@@ -90,10 +94,13 @@ void ULListStr::pop_back(){
   if(tail_ == nullptr){
     return; // nothing to do here
   }
-  // get rid of dead space if array isn't empty
+
+  // array has elements in tail_ so we can just take one out
   else if(tail_->last - tail_->first > 1){
     tail_->last--;
   }
+
+  // array is/will be empty in tail_
   else{
     Item* tmp = tail_;
     // check if list is only 1 item
@@ -109,25 +116,30 @@ void ULListStr::pop_back(){
     }
     delete tmp; // free the old tail_ node
   }
+
   size_--;
 }
 
 void ULListStr::push_front(const std::string& val){
   // empty list handling
   if(head_ == nullptr){
+    // same process as push_back()
     Item* tmp = new Item();
     head_ = tmp;
-    tail_ = tmp; // same handling as push_back()
+    tail_ = tmp; 
+
     head_->first = ARRSIZE-1; // insert on right side so other elements can be insert to the left later
     head_->val[head_->first] = val;
     head_->last = ARRSIZE;
   }
-  // handle if there is some room left in head_ before first
+  
+  // handle if there is some room left in head_ before head_->first
   else if (head_->first > 0){
     // insert into slot before head_->first
     head_->first--;
     head_->val[head_->first] = val;
   }
+  
   // handle if there is no room in head_
   else{
     // replace head_ with tmp
@@ -146,10 +158,13 @@ void ULListStr::pop_front(){
   if(head_ == nullptr){
     return; // list is empty anyway
   }
-  // get rid of dead space if array isn't empty
+
+  // array has elements so we can just take one out
   else if(head_->last - head_->first > 1){
     head_->first++; // just get rid of first element
   }
+
+  // array is/will be empty
   else{
     Item* tmp = head_;
     // if list is only 1 item, head_ and tail_ will be empty after popping
@@ -164,6 +179,7 @@ void ULListStr::pop_front(){
     }
     delete tmp; // free old head_ node
   }
+
   size_--;
 }
 
